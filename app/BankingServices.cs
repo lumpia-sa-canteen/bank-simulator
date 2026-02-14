@@ -1,8 +1,13 @@
+using System;
+
 namespace ATMApp.Services
 {
     public static class BankingServices
     {
         // Option 1: Pass-by-value
+        
+        private static double lastTransactionAmount = 0;
+        
         public static double GetBalance(double balance)
         {
             return balance;
@@ -11,7 +16,13 @@ namespace ATMApp.Services
         // Option 2: ref (Deposit)
         public static bool Deposit(ref double balance, double amount)
         {
-            return false; //placeholder return value, replace with actual implementation
+            if(amount > 0)
+            {
+                balance += amount;
+                lastTransacationAmount = amount;
+                return true;
+            }
+            return false;
         }
 
         // Option 3: ref + out (Withdraw)
@@ -21,6 +32,21 @@ namespace ATMApp.Services
             out bool isSuccessful)
         {
             isSuccessful = false; //placeholder value, replace with actual implementation
+            
+            if(amount > 0)
+            {
+                if(amount >= balance)
+                {
+                    balance -= amount;
+                    lastTransactionAmount = -amount;
+                    isSuccessful = true;
+                }
+            }
+        }
+        public static void Print(double balance)
+        {
+            Console.WriteLine("---BSCS BANKO CENTRAL NG YOSI---");
+            Console.WriteLine($"Current Balance (Php): {balance}");
+            Console.WriteLine("Last Transaction Amount (Php): {lastTransactionAmount}");
         }
     }
-}
